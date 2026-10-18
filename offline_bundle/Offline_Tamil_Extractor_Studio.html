@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tamil PDF Question Bank - Offline Portable App</title>
+  <style>
+    :root {
+      --font-tamil: 'Noto Sans Tamil', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+    body {
+      font-family: var(--font-tamil);
+      background-color: #f8fafc;
+      color: #0f172a;
+      margin: 0;
+      padding: 20px;
+    }
+    .header {
+      background: #0f172a;
+      color: white;
+      padding: 16px 24px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .card {
+      background: white;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    textarea {
+      width: 100%;
+      height: 220px;
+      font-family: var(--font-tamil);
+      font-size: 13px;
+      padding: 12px;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      box-sizing: border-box;
+      line-height: 1.6;
+    }
+    button {
+      background: #0f172a;
+      color: white;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #1e293b;
+    }
+    .btn-emerald {
+      background: #047857;
+    }
+    .btn-emerald:hover {
+      background: #065f46;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      margin-top: 15px;
+    }
+    th, td {
+      border: 1px solid #e2e8f0;
+      padding: 10px;
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      background: #f1f5f9;
+      font-weight: 600;
+    }
+    .badge {
+      background: #e2e8f0;
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div>
+        <h2 style="margin:0; font-size:18px;">Tamil PDF Question Bank - Offline Portable App</h2>
+        <div style="font-size:12px; color:#94a3b8; margin-top:4px;">Runs 100% offline in your browser · No internet needed</div>
+      </div>
+      <div>
+        <span class="badge" style="background:#047857; color:white;">Offline Ready</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div style="display:flex; gap:12px; align-items:center; margin-bottom:12px;">
+        <label>From #: <input type="number" id="qFrom" value="1" style="width:60px; padding:6px;"></label>
+        <label>To #: <input type="number" id="qTo" value="100" style="width:60px; padding:6px;"></label>
+        <label>Series: <input type="text" id="series" value="TNPSC" style="width:90px; padding:6px;"></label>
+        <label>Bank ID: <input type="text" id="bank" value="20242" style="width:80px; padding:6px;"></label>
+        <button onclick="extractQuestions()">Run Extraction</button>
+        <button class="btn-emerald" onclick="downloadCSV()">Export CSV (Excel)</button>
+        <button onclick="downloadTXT()">Export TXT</button>
+      </div>
+
+      <div class="grid">
+        <div>
+          <label style="font-size:13px; font-weight:bold; display:block; margin-bottom:6px;">Paste Scanned Exam Text / Lines:</label>
+          <textarea id="rawText" placeholder="Paste exam questions here...">1. 'செந்தமிழே! உயிரே! நறுந்தேனே! செயலினை மூச்சினை உனக்களித்தேனே' - என்று பாடியவர் யார்?
+(A) பாரதியார்
+(B) பாரதிதாசன்
+(C) நாமக்கல் கவிஞர்
+(D) வாணிதாசன்
+(E) விடை தெரியவில்லை
+
+2. கீழ்க்கண்டவற்றுள் சரியான மரபுத் தொடரைத் தேர்க:
+(A) காகம் கத்தும்
+(B) ஆந்தை அலறும்
+(C) குதிரை கத்தும்
+(D) சிங்கம் கத்தும்
+(E) விடை தெரியவில்லை
+
+3. Which Article of the Indian Constitution deals with the Abolition of Untouchability?
+இந்திய அரசியலமைப்பின் எந்த விதி தீண்டாமை ஒழிப்பைப் பற்றிக் குறிப்பிடுகிறது?
+(A) Article 14 / விதி 14
+(B) Article 17 / விதி 17
+(C) Article 19 / விதி 19
+(D) Article 21 / விதி 21
+(E) விடை தெரியவில்லை
+</textarea>
+        </div>
+        <div>
+          <label style="font-size:13px; font-weight:bold; display:block; margin-bottom:6px;">Extraction Summary & Stats:</label>
+          <div id="stats" style="background:#f8fafc; border:1px solid #cbd5e1; border-radius:8px; padding:16px; height:220px; box-sizing:border-box; overflow-y:auto; font-size:13px;">
+            Ready to extract. Click <strong>'Run Extraction'</strong> above to test!
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3 style="margin-top:0; font-size:15px;">Extracted Questions Table</h3>
+      <table id="questionsTable">
+        <thead>
+          <tr>
+            <th style="width:40px;">No</th>
+            <th style="width:120px;">QuestionNo (Key)</th>
+            <th>Question</th>
+            <th>Options (A)-(E)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td colspan="4" style="text-align:center; color:#64748b;">No questions extracted yet. Click 'Run Extraction'.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    let extractedData = [];
+
+    function extractQuestions() {
+      const text = document.getElementById('rawText').value;
+      const lo = parseInt(document.getElementById('qFrom').value) || 1;
+      const hi = parseInt(document.getElementById('qTo').value) || 100;
+      const series = document.getElementById('series').value || 'TNPSC';
+      const bank = document.getElementById('bank').value || '20242';
+
+      const lines = text.split('\n');
+      const qHead = /^\s*(\d{1,3})\s*([.)]|,)\s*(.*)$/;
+      const optMark = /(?:(?<=\s)|^)\(\s*([A-Ea-e])\s*\)/g;
+
+      let cur = null;
+      const found = {};
+
+      for (let raw of lines) {
+        let line = raw.trim();
+        if (!line) continue;
+        const m = line.match(qHead);
+        if (m) {
+          const n = parseInt(m[1]);
+          if (n >= lo && n <= hi) {
+            cur = { n, text: [], opts: {} };
+            found[n] = cur;
+            line = m[3].trim();
+          }
+        }
+        if (!cur) continue;
+        const marks = [...line.matchAll(optMark)];
+        if (marks.length === 0) {
+          cur.text.push(line);
+        } else {
+          for (let k = 0; k < marks.length; k++) {
+            const label = marks[k][1].toUpperCase();
+            const start = marks[k].index + marks[k][0].length;
+            const end = k + 1 < marks.length ? marks[k+1].index : line.length;
+            const body = line.slice(start, end).trim();
+            cur.opts[label] = body;
+          }
+        }
+      }
+
+      extractedData = [];
+      const tbody = document.querySelector('#questionsTable tbody');
+      tbody.innerHTML = '';
+
+      for (let n = lo; n <= hi; n++) {
+        if (!found[n]) continue;
+        const item = found[n];
+        const qStem = item.text.join('\n').trim();
+        const optsList = [];
+        for (let l of ['A','B','C','D','E']) {
+          if (item.opts[l]) {
+            let b = item.opts[l];
+            if (l === 'E' && (b.includes('தெரிய') || b.length < 5)) b = 'விடை தெரியவில்லை';
+            optsList.push(`(${l}) ${b}`);
+          }
+        }
+        const answers = optsList.join('\n');
+        const key = `${series}-${bank}-${n}`;
+        extractedData.push({ n, key, qStem, answers });
+
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td><strong>${n}</strong></td>
+          <td><code>${key}</code></td>
+          <td style="white-space:pre-line;">${qStem}</td>
+          <td style="white-space:pre-line;">${answers}</td>
+        `;
+        tbody.appendChild(tr);
+      }
+
+      document.getElementById('stats').innerHTML = `
+        <div style="color:#047857; font-weight:bold; margin-bottom:8px;">Extraction Successful!</div>
+        <div>Total Questions: <strong>${extractedData.length}</strong></div>
+        <div>Key Formula: <code>${series}-${bank}-{Number}</code></div>
+        <div style="margin-top:12px; font-size:12px; color:#475569;">You can now export directly to CSV (for Excel) or Text!</div>
+      `;
+    }
+
+    function downloadCSV() {
+      if (extractedData.length === 0) return alert('Extract questions first!');
+      let csv = '\uFEFFTestSeries,QuestionBank,QuestionNo,Number,Question,Anwers\n';
+      const series = document.getElementById('series').value;
+      const bank = document.getElementById('bank').value;
+      for (let q of extractedData) {
+        const qText = `"${q.qStem.replace(/"/g, '""')}"`;
+        const aText = `"${q.answers.replace(/"/g, '""')}"`;
+        csv += `${series},${bank},${q.key},${q.n},${qText},${aText}\n`;
+      }
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'tamil_question_bank.csv';
+      a.click();
+    }
+
+    function downloadTXT() {
+      if (extractedData.length === 0) return alert('Extract questions first!');
+      let txt = '';
+      for (let q of extractedData) {
+        txt += `${q.n}. ${q.qStem}\n${q.answers}\n\n`;
+      }
+      const blob = new Blob([txt], { type: 'text/plain;charset=utf-8;' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'tamil_question_bank.txt';
+      a.click();
+    }
+  </script>
+</body>
+</html>
